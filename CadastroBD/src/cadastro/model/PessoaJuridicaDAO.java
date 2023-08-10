@@ -5,8 +5,6 @@
 package cadastro.model;
 import cadastrobd.model.PessoaJuridica;
 import cadastro.model.util.ConectorBD;
-import cadastro.model.util.SequenceManager;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,14 +18,14 @@ import java.util.List;
  */
 public class PessoaJuridicaDAO {
     private ConectorBD conector;
-    private SequenceManager sequenceManager;
+    
     
     public PessoaJuridicaDAO(){
     }
 
-    public PessoaJuridicaDAO(ConectorBD conector, SequenceManager sequenceManager) {
+    public PessoaJuridicaDAO(ConectorBD conector) {
         this.conector = conector;
-        this.sequenceManager = sequenceManager;
+        
     }
 
     public PessoaJuridica getPessoa(int id) {
@@ -76,11 +74,10 @@ public class PessoaJuridicaDAO {
         String sqlPessoaJuridica = "INSERT INTO PessoasJuridicas (idPJuridica, cnpj) VALUES (?, ?)";
 
         try (Connection conn = conector.getConnection();
-             PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);
-             PreparedStatement stmtPessoaJuridica = conn.prepareStatement(sqlPessoaJuridica)) {
-
-            int id = sequenceManager.getValue("seqId");
-            stmtPessoa.setInt(1, id);
+            PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);
+            PreparedStatement stmtPessoaJuridica = conn.prepareStatement(sqlPessoaJuridica)) {
+            
+            stmtPessoa.setInt(1, pessoaJuridica.getId());
             stmtPessoa.setString(2, pessoaJuridica.getNome());
             stmtPessoa.setString(3, pessoaJuridica.getLogradouro());
             stmtPessoa.setString(4, pessoaJuridica.getCidade());
@@ -89,7 +86,7 @@ public class PessoaJuridicaDAO {
             stmtPessoa.setString(7, pessoaJuridica.getEmail());
             stmtPessoa.executeUpdate();
 
-            stmtPessoaJuridica.setInt(1, id);
+            stmtPessoaJuridica.setInt(1, pessoaJuridica.getId());
             stmtPessoaJuridica.setString(2, pessoaJuridica.getCnpj());
             stmtPessoaJuridica.executeUpdate();
 
@@ -131,21 +128,23 @@ public class PessoaJuridicaDAO {
     public boolean excluir(int id) {
         String sqlPessoa = "DELETE FROM Pessoas WHERE idPessoa=?";
         String sqlPessoaJuridica = "DELETE FROM PessoasJuridicas WHERE idPJuridica=?";
-        try (Connection conn = conector.getConnection();
-             PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);
-             PreparedStatement stmtPessoaJuridica = conn.prepareStatement(sqlPessoaJuridica)) {
-
-            stmtPessoa.setInt(1, id);
-            stmtPessoa.executeUpdate();
-
-            stmtPessoaJuridica.setInt(1, id);
-            stmtPessoaJuridica.executeUpdate();
-
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+         try (Connection conn = conector.getConnection();
+         PreparedStatement stmtPessoaJuridica = conn.prepareStatement(sqlPessoaJuridica);
+         PreparedStatement stmtPessoa = conn.prepareStatement(sqlPessoa);) {
+         
+        // Excluir da tabela PessoasJuridicas primeiro
+        stmtPessoaJuridica.setInt(1, id);
+        stmtPessoaJuridica.executeUpdate();
+        
+        // Em seguida, excluir da tabela Pessoas
+        stmtPessoa.setInt(1, id);
+        stmtPessoa.executeUpdate();
+        
+        return true;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
+  }
     
 }

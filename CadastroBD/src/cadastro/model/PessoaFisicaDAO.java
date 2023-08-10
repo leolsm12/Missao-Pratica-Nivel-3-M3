@@ -4,7 +4,6 @@
  */
 package cadastro.model;
 import cadastro.model.util.ConectorBD;
-import cadastro.model.util.SequenceManager;
 import cadastrobd.model.PessoaFisica;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -106,13 +105,10 @@ public class PessoaFisicaDAO {
             conn = conector.getConnection();
             conn.setAutoCommit(false);
             
-            SequenceManager sequenceManager = new SequenceManager(conector);
-            int idPessoa = sequenceManager.getValue("seqId");
-
             // Inserir na tabela Pessoas
             String queryPessoa = "INSERT INTO Pessoas (idPessoa, nome, logradouro, cidade, estado, telefone, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
             stmtPessoa = conn.prepareStatement(queryPessoa, PreparedStatement.RETURN_GENERATED_KEYS);
-            stmtPessoa.setInt(1, idPessoa);
+            stmtPessoa.setInt(1, pessoa.getId());
             stmtPessoa.setString(2, pessoa.getNome());
             stmtPessoa.setString(3, pessoa.getLogradouro());
             stmtPessoa.setString(4, pessoa.getCidade());
@@ -121,19 +117,11 @@ public class PessoaFisicaDAO {
             stmtPessoa.setString(7, pessoa.getEmail());
             stmtPessoa.executeUpdate();
 
-            // Obter o id gerado
-           
-           /* try (ResultSet generatedKeys = stmtPessoa.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    idPessoa = generatedKeys.getInt(1);
-                }
-            }*/
-
-            if (idPessoa != -1) {
+            if (pessoa.getId() != -1) {
                 // Inserir na tabela PessoasFisicas
                 String queryPessoaFisica = "INSERT INTO PessoasFisicas (idPFisica, cpf) VALUES (?, ?)";
                 stmtPessoaFisica = conn.prepareStatement(queryPessoaFisica);
-                stmtPessoaFisica.setInt(1, idPessoa);
+                stmtPessoaFisica.setInt(1, pessoa.getId());
                 stmtPessoaFisica.setString(2, pessoa.getCpf());
                 stmtPessoaFisica.executeUpdate();
                 conn.commit();
@@ -231,6 +219,8 @@ public class PessoaFisicaDAO {
 
             conn.commit();
             sucesso = true;
+            
+            
         } catch (SQLException e) {
             e.printStackTrace();
             if (conn != null) {
@@ -243,6 +233,11 @@ public class PessoaFisicaDAO {
         } finally {
             conector.close(stmt);
             conector.close(conn);
+            if (sucesso) {
+                System.out.println("Pessoa excluída com sucesso!");
+            } else {
+                System.out.println("Erro ao excluir pessoa.");
+            }
         }
 
         return sucesso;

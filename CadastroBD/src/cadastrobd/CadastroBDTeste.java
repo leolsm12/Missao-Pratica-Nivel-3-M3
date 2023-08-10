@@ -11,6 +11,7 @@ import cadastro.model.util.SequenceManager;
 import cadastrobd.model.PessoaFisica;
 import cadastrobd.model.PessoaJuridica;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -19,48 +20,115 @@ import java.util.List;
 public class CadastroBDTeste {
     
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
         ConectorBD conector = new ConectorBD
             ("jdbc:sqlserver://localhost:1433;databaseName=loja;encrypt=true;trustServerCertificate=true;",
                     "loja",
                     "loja");
-        SequenceManager sequenceManager = new SequenceManager(conector);
-        
         PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO(conector);
-        PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO(conector, sequenceManager);
-        
+        PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO(conector);
         PessoaFisica pessoaFisica = new PessoaFisica();
-        pessoaFisica.setNome("Joao azevedo");
-        pessoaFisica.setLogradouro("Rua 15");
-        pessoaFisica.setCidade("Riacho do Sul");
-        pessoaFisica.setEstado("PA");
-        pessoaFisica.setTelefone("4444-5555");
-        pessoaFisica.setEmail("joaoazevedo@riacho.com");
-        pessoaFisica.setCpf("44444444444");
+        PessoaJuridica pessoaJuridica = new PessoaJuridica();
         
-        pessoaFisicaDAO.incluir(pessoaFisica);
+        int opcao;
+        int ID;
+        boolean menu = true;
+        while(menu == true){
+            System.out.println("Menu:");
+            System.out.println("1. Incluir");
+            System.out.println("2. Alterar pessoa ");
+            System.out.println("3. Exibir todos ");
+            System.out.println("4. Excluir pessoa ");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+            
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpar o buffer
+        switch (opcao) {
+                case 1:
+                    //Instanciar uma pessoa física e persistir no banco de dados. 
+                    pessoaFisica.setId(1);
+                    pessoaFisica.setNome("André Cunha");
+                    pessoaFisica.setLogradouro("Rua 15");
+                    pessoaFisica.setCidade("Riacho do Sul");
+                    pessoaFisica.setEstado("PA");
+                    pessoaFisica.setTelefone("4444-5555");
+                    pessoaFisica.setEmail("andrecunha@riacho.com");
+                    pessoaFisica.setCpf("44444444444");
         
-        PessoaFisica pessoa1 = pessoaFisicaDAO.getPessoa(7);
-        PessoaJuridica pessoa2 = pessoaJuridicaDAO.getPessoa(8);
+                    pessoaFisicaDAO.incluir(pessoaFisica);
+                    
+                    pessoaJuridica.setId(2); 
+                    pessoaJuridica.setNome("AC");
+                    pessoaJuridica.setLogradouro("Rua 55");
+                    pessoaJuridica.setCidade("Riacho do oeste");
+                    pessoaJuridica.setEstado("BA");
+                    pessoaJuridica.setTelefone("9999-5555");
+                    pessoaJuridica.setEmail("ac@riacho.com");
+                    pessoaJuridica.setCnpj("99999999999");
         
+                    pessoaJuridicaDAO.incluir(pessoaJuridica);
+                    
+                    break;
+                    
+                case 2:
+                    //Alterar os dados da pessoa física no banco.
+                    
+                    pessoaFisica.setId(1);
+                    pessoaFisica.setNome("Paulo André");
+                    pessoaFisica.setLogradouro("Rua 20");
+                    pessoaFisica.setCidade("Riacho do Norte");
+                    pessoaFisica.setEstado("SP");
+                    pessoaFisica.setTelefone("7777-8888");
+                    pessoaFisica.setEmail("pauloandre@riacho.com");
+                    pessoaFisica.setCpf("99999999999");
+                    
+                    pessoaFisicaDAO.alterar(pessoaFisica);
+                    
+                    
+                    
+                    pessoaJuridica.setId(2);
+                    pessoaJuridica.setNome("PA-eletric");
+                    pessoaJuridica.setLogradouro("Rua 70");
+                    pessoaJuridica.setCidade("Riacho");
+                    pessoaJuridica.setEstado("TO");
+                    pessoaJuridica.setTelefone("8888-1111");
+                    pessoaJuridica.setEmail("pa@riacho.com");
+                    pessoaJuridica.setCnpj("11111111111");
         
-
-        // Agora você pode usar o objeto pessoaFisicaDAO para acessar os métodos da classe
-        List<PessoaFisica> pessoasF = pessoaFisicaDAO.getPessoas();
-        List<PessoaJuridica> pessoasJ = pessoaJuridicaDAO.getPessoas();
-         // ... fazer outras operações com o objeto pessoaFisicaDAO ...
-        
-        pessoa1.exibir();
-      
-
-        
-        for (PessoaFisica pessoa : pessoasF) {
-        pessoa.exibir();
+                    pessoaJuridicaDAO.alterar(pessoaJuridica);
+                    break;
+                
+                case 3:
+                    //Consultar todas as pessoas físicas do banco de dados e listar no console.
+                    List<PessoaFisica> pessoasF = pessoaFisicaDAO.getPessoas();
+                    for (PessoaFisica pessoa : pessoasF) {
+                    pessoa.exibir();
+                    }
+                    List<PessoaJuridica> pessoasJ = pessoaJuridicaDAO.getPessoas();
+                    for (PessoaJuridica pessoa : pessoasJ) {
+                    pessoa.exibir();
+                    }
+                    
+                    break;
+                case 4:
+                    //Excluir a pessoa física criada anteriormente no banco.
+                                        
+                    
+                    pessoaFisicaDAO.excluir(1);
+                    
+                   
+                    pessoaJuridicaDAO.excluir(2 );
+                    
+                    break;
+                case 0:
+                    System.out.println("programa encerrado!!");
+                    menu = false;
+                    break;
+                        
+            }
         }
-        for (PessoaJuridica pessoa : pessoasJ) {
-        pessoa.exibir();
-        
-        }
-        
         
     }
     
