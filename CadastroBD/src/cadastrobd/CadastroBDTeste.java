@@ -7,7 +7,6 @@ package cadastrobd;
 import cadastro.model.PessoaFisicaDAO;
 import cadastro.model.PessoaJuridicaDAO;
 import cadastro.model.util.ConectorBD;
-import cadastro.model.util.SequenceManager;
 import cadastrobd.model.PessoaFisica;
 import cadastrobd.model.PessoaJuridica;
 import java.util.List;
@@ -21,27 +20,28 @@ public class CadastroBDTeste {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
         ConectorBD conector = new ConectorBD
             ("jdbc:sqlserver://localhost:1433;databaseName=loja;encrypt=true;trustServerCertificate=true;",
                     "loja",
                     "loja");
+        
         PessoaFisicaDAO pessoaFisicaDAO = new PessoaFisicaDAO(conector);
         PessoaJuridicaDAO pessoaJuridicaDAO = new PessoaJuridicaDAO(conector);
         PessoaFisica pessoaFisica = new PessoaFisica();
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
         
         int opcao;
-        int ID;
         boolean menu = true;
+        
         while(menu == true){
-            System.out.println("Menu:");
-            System.out.println("1. Incluir");
-            System.out.println("2. Alterar pessoa ");
-            System.out.println("3. Exibir todos ");
-            System.out.println("4. Excluir pessoa ");
-            System.out.println("0. Sair");
-            System.out.print("Escolha uma opção: ");
+            System.out.println("=========================");
+            System.out.println("1 - Incluir");
+            System.out.println("2 - Alterar pessoa ");
+            System.out.println("3 - Exibir todos ");
+            System.out.println("4 - Excluir pessoa ");
+            System.out.println("0 - Sair");
+            System.out.println("===========================");
+            System.out.println("Digite a opção desejada:");
             
             opcao = scanner.nextInt();
             scanner.nextLine(); // Limpar o buffer
