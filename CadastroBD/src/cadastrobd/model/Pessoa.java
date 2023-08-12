@@ -96,9 +96,4 @@ public class Pessoa {
         System.out.println("Email: " + email);
     }
     
-    
-    
-    
-    
-    
 }

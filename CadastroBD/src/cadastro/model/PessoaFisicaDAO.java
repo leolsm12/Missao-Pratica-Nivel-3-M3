@@ -85,7 +85,6 @@ public class PessoaFisicaDAO {
                 pessoas.add(pessoa);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             conector.close(rs);
             conector.close(stmt);
@@ -130,7 +129,6 @@ public class PessoaFisicaDAO {
                 conn.rollback();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             if (conn != null) {
                 try {
                     conn.rollback();

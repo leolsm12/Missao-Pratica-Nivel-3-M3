@@ -56,6 +56,8 @@ public class CadastroBDTeste {
                     pessoaFisica.setTelefone("4444-5555");
                     pessoaFisica.setEmail("andrecunha@riacho.com");
                     pessoaFisica.setCpf("44444444444");
+                    
+                    pessoaFisica.exibir();
         
                     pessoaFisicaDAO.incluir(pessoaFisica);
                     

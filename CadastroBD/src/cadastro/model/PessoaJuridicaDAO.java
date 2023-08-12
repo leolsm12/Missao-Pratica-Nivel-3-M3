@@ -44,7 +44,6 @@ public class PessoaJuridicaDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
@@ -64,7 +63,7 @@ public class PessoaJuridicaDAO {
                 pessoasJuridicas.add(pessoaJuridica);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            return null;
         }
         return pessoasJuridicas;
     }
@@ -92,7 +91,6 @@ public class PessoaJuridicaDAO {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -120,7 +118,6 @@ public class PessoaJuridicaDAO {
 
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -142,7 +139,6 @@ public class PessoaJuridicaDAO {
         
         return true;
     } catch (SQLException e) {
-        e.printStackTrace();
         return false;
     }
   }
