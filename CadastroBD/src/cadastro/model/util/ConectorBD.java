@@ -74,6 +74,5 @@ public class ConectorBD {
         close(rs);
         close(stmt);
         close(conn);
-    }
-    
+    }  
 }

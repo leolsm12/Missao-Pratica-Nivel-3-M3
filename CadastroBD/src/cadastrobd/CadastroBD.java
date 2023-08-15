@@ -49,9 +49,9 @@ public class CadastroBD {
             System.out.println("1 - Incluir pessoa");
             System.out.println("2 - Alterar pessoa ");
             System.out.println("3 - Excluir pessoa ");
-            System.out.println("4 - Exibir pessoa pelo ID ");
+            System.out.println("4 - Exibir pelo ID ");
             System.out.println("5 - Exibir todos ");
-            System.out.println("0 - Sair");
+            System.out.println("0 - Finalizar Programa");
             System.out.println("===========================");
                         
             System.out.println("Digite o numero desejado: ");

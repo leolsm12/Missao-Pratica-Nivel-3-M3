@@ -32,9 +32,5 @@ public class PessoaFisica extends Pessoa {
         super.exibir();
         System.out.println("CPF: " + cpf);
     }
-  
-    
-
-
 }
 

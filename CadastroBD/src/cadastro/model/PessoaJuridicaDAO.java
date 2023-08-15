@@ -29,16 +29,21 @@ public class PessoaJuridicaDAO {
     }
 
     public PessoaJuridica getPessoa(int id) {
-        String sql = "SELECT * FROM Pessoas P INNER JOIN PessoasJuridicas PJ ON P.idPessoa = PJ.idPJuridica WHERE P.idPessoa = ?";
+        String sql = "SELECT * FROM Pessoas P INNER JOIN PessoasJuridicas PJ ON"
+                        + " P.idPessoa = PJ.idPJuridica WHERE P.idPessoa = ?";
         try (Connection conn = conector.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    PessoaJuridica pessoaJuridica = new PessoaJuridica(rs.getInt("idPessoa"),
-                            rs.getString("nome"), rs.getString("logradouro"),
-                            rs.getString("cidade"), rs.getString("estado"),
-                            rs.getString("telefone"), rs.getString("email"),
+                    PessoaJuridica pessoaJuridica = 
+                            new PessoaJuridica(rs.getInt("idPessoa"),
+                            rs.getString("nome"),
+                            rs.getString("logradouro"),
+                            rs.getString("cidade"),
+                            rs.getString("estado"),
+                            rs.getString("telefone"), 
+                            rs.getString("email"),
                             rs.getString("cnpj"));
                     return pessoaJuridica;
                 }
@@ -55,10 +60,14 @@ public class PessoaJuridicaDAO {
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                PessoaJuridica pessoaJuridica = new PessoaJuridica(rs.getInt("idPessoa"),
-                        rs.getString("nome"), rs.getString("logradouro"),
-                        rs.getString("cidade"), rs.getString("estado"),
-                        rs.getString("telefone"), rs.getString("email"),
+                PessoaJuridica pessoaJuridica = 
+                        new PessoaJuridica(rs.getInt("idPessoa"),
+                        rs.getString("nome"),
+                        rs.getString("logradouro"),
+                        rs.getString("cidade"),
+                        rs.getString("estado"),
+                        rs.getString("telefone"),
+                        rs.getString("email"),
                         rs.getString("cnpj"));
                 pessoasJuridicas.add(pessoaJuridica);
             }

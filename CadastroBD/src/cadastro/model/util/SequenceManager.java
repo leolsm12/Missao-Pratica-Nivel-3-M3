@@ -43,8 +43,5 @@ public class SequenceManager {
         }
 
         return nextValue;
-    }
-
-   
-    
+    }  
 }

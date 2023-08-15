@@ -22,6 +22,7 @@ public class PessoaFisicaDAO {
     public PessoaFisicaDAO(ConectorBD conector) {
         this.conector = conector;
     }
+    
     public PessoaFisicaDAO(){
     }
 
@@ -105,8 +106,11 @@ public class PessoaFisicaDAO {
             conn.setAutoCommit(false);
             
             // Inserir na tabela Pessoas
-            String queryPessoa = "INSERT INTO Pessoas (idPessoa, nome, logradouro, cidade, estado, telefone, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            stmtPessoa = conn.prepareStatement(queryPessoa, PreparedStatement.RETURN_GENERATED_KEYS);
+            String queryPessoa = "INSERT INTO Pessoas ("
+                    + "idPessoa, nome, logradouro, cidade, estado, telefone,"
+                    + " email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            stmtPessoa = conn.prepareStatement(queryPessoa, 
+                        PreparedStatement.RETURN_GENERATED_KEYS);
             stmtPessoa.setInt(1, pessoa.getId());
             stmtPessoa.setString(2, pessoa.getNome());
             stmtPessoa.setString(3, pessoa.getLogradouro());
@@ -118,7 +122,8 @@ public class PessoaFisicaDAO {
 
             if (pessoa.getId() != -1) {
                 // Inserir na tabela PessoasFisicas
-                String queryPessoaFisica = "INSERT INTO PessoasFisicas (idPFisica, cpf) VALUES (?, ?)";
+                String queryPessoaFisica = "INSERT INTO PessoasFisicas ("
+                        + "idPFisica, cpf) VALUES (?, ?)";
                 stmtPessoaFisica = conn.prepareStatement(queryPessoaFisica);
                 stmtPessoaFisica.setInt(1, pessoa.getId());
                 stmtPessoaFisica.setString(2, pessoa.getCpf());
@@ -156,7 +161,9 @@ public class PessoaFisicaDAO {
             conn.setAutoCommit(false);
 
             // Atualizar tabela Pessoas
-            String queryPessoa = "UPDATE Pessoas SET nome = ?, logradouro = ?, cidade = ?, estado = ?, telefone = ?, email = ? WHERE idPessoa = ?";
+            String queryPessoa = "UPDATE Pessoas SET nome = ?, logradouro = ?,"
+                                + "cidade = ?, estado = ?, telefone = ?,"
+                                + " email = ? WHERE idPessoa = ?";
             stmtPessoa = conn.prepareStatement(queryPessoa);
             stmtPessoa.setString(1, pessoa.getNome());
             stmtPessoa.setString(2, pessoa.getLogradouro());
@@ -217,8 +224,7 @@ public class PessoaFisicaDAO {
 
             conn.commit();
             sucesso = true;
-            
-            
+             
         } catch (SQLException e) {
             e.printStackTrace();
             if (conn != null) {
@@ -239,8 +245,5 @@ public class PessoaFisicaDAO {
         }
 
         return sucesso;
-    }
-    
-    
-    
+    }   
 }

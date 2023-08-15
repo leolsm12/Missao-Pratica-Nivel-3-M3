@@ -32,5 +32,4 @@ public class PessoaJuridica extends Pessoa {
         super.exibir();
         System.out.println("CNPJ: " + cnpj);
     }
-    
 }
